@@ -1,4 +1,6 @@
+import 'package:chat_app/bloc/register/register_bloc.dart';
 import 'package:chat_app/screens/home_screen.dart';
+import 'package:chat_app/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
@@ -58,22 +60,26 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<LoginBloc>(create: (BuildContext context) => LoginBloc())
+        BlocProvider<LoginBloc>(create: (BuildContext context) => LoginBloc()),
+        BlocProvider<RegisterBloc>(
+            create: (BuildContext context) => RegisterBloc())
       ],
       child: MaterialApp(
-          title: 'Flutter Chat',
-          theme: ThemeData(
-            primarySwatch: Colors.teal,
-            accentColor: Colors.tealAccent,
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-          ),
-          home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-            builder: (context, state) {
-              return state is AuthenticationAuthenticated
-                  ? HomeScreen()
-                  : LoginScreen();
-            },
-          )),
+        title: 'Flutter Chat',
+        theme: ThemeData(
+          primarySwatch: Colors.teal,
+          accentColor: Colors.tealAccent,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+          builder: (context, state) {
+            return state is AuthenticationAuthenticated
+                ? HomeScreen()
+                : LoginScreen();
+          },
+        ),
+        onGenerateRoute: Router.generateRoute,
+      ),
     );
   }
 }
@@ -84,6 +90,9 @@ class Router {
       case (homeRoute):
         return MaterialPageRoute(
             builder: (_) => HomeScreen(), settings: settings);
+      case (registerRoute):
+        return MaterialPageRoute(
+            builder: (_) => RegisterScreen(), settings: settings);
       default:
         return MaterialPageRoute(
             builder: (_) => HomeScreen(), settings: settings);

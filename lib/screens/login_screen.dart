@@ -13,11 +13,6 @@ class LoginScreen extends HookWidget {
     final emailController = useTextEditingController();
     final passwordController = useTextEditingController();
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
       body: Container(
         decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -32,6 +27,7 @@ class LoginScreen extends HookWidget {
             padding: const EdgeInsets.all(30.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 TextFormField(
                   controller: emailController,
@@ -57,34 +53,48 @@ class LoginScreen extends HookWidget {
                 SizedBox(
                   height: 10,
                 ),
-                BlocListener<LoginBloc, LoginState>(listener: (context, state) {
-                  if (state is LoginSuccess) {
-                    Navigator.of(context).pushNamed(homeRoute);
-                  }
-                }, child: BlocBuilder<LoginBloc, LoginState>(
-                  builder: (context, state) {
-                    return RaisedButton(
-                      child: state is LoginLoading
-                          ? CircularProgressIndicator()
-                          : Text('Login'),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      onPressed: state is LoginLoading
-                          ? null
-                          : () {
-                              if (_formKey.currentState.validate()) {
-                                BlocProvider.of<LoginBloc>(context).add(
-                                    LoginButtonPressed(emailController.text,
-                                        passwordController.text));
-                              }
-                            },
-                    );
+                BlocListener<LoginBloc, LoginState>(
+                  listener: (context, state) {
+                    if (state is LoginSuccess) {
+                      _formKey.currentState.reset();
+                      emailController.clear();
+                      passwordController.clear();
+                      Navigator.of(context).pushReplacementNamed(homeRoute);
+                    }
                   },
-                )),
+                  child: BlocBuilder<LoginBloc, LoginState>(
+                    builder: (context, state) {
+                      return RaisedButton(
+                        child: state is LoginLoading
+                            ? CircularProgressIndicator()
+                            : Text('Login'),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        onPressed: state is LoginLoading
+                            ? null
+                            : () {
+                                if (_formKey.currentState.validate()) {
+                                  BlocProvider.of<LoginBloc>(context).add(
+                                      LoginButtonPressed(emailController.text,
+                                          passwordController.text));
+                                }
+                              },
+                      );
+                    },
+                  ),
+                ),
+                RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  onPressed: () => BlocProvider.of<LoginBloc>(context)
+                      .add(LoginWithGoogle()),
+                  child: Text('SignIn with Google'),
+                ),
                 Align(
                   alignment: Alignment.centerRight,
                   child: FlatButton(
-                      onPressed: () {},
+                      onPressed: () =>
+                          Navigator.of(context).pushNamed(registerRoute),
                       child: Text(
                         'Create an account?',
                         style: TextStyle(

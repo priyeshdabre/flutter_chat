@@ -28,7 +28,7 @@ class RemoteApis {
     }
   }
 
-  Future<FirebaseUser> signInwithGoogle({String email, String password}) async {
+  Future<FirebaseUser> signInwithGoogle() async {
     final GoogleSignIn _googleSignIn = new GoogleSignIn();
     final GoogleSignInAccount googleSignInAccount =
         await _googleSignIn.signIn();
