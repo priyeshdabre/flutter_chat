@@ -68,7 +68,6 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Chat',
         theme: ThemeData(
           primarySwatch: Colors.teal,
-          accentColor: Colors.tealAccent,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(

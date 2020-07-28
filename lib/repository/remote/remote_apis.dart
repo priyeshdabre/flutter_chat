@@ -41,4 +41,13 @@ class RemoteApis {
     FirebaseUser userDetails = result.user;
     return userDetails;
   }
+
+  Future<void> signOut() async {
+    try {
+      await _firebaseAuth.signOut();
+    } catch (e) {
+      print(e.toString());
+      return throw Exception(e);
+    }
+  }
 }

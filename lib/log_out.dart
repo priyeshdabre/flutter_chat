@@ -32,6 +32,7 @@ Future<void> logOut(BuildContext context) async {
               child: Text('Yes'),
               onPressed: () async {
                 Navigator.of(context).pop(true);
+                await repository.remoteApis.signOut();
                 await repository.queries.deleteSettingsData();
                 RestartWidget.restartApp(context);
               },
