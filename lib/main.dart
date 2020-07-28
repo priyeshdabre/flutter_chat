@@ -1,6 +1,7 @@
 import 'package:chat_app/bloc/register/register_bloc.dart';
 import 'package:chat_app/screens/home_screen.dart';
 import 'package:chat_app/screens/register_screen.dart';
+import 'package:chat_app/screens/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
@@ -92,6 +93,8 @@ class Router {
       case (registerRoute):
         return MaterialPageRoute(
             builder: (_) => RegisterScreen(), settings: settings);
+      case (searchRoute):
+        return MaterialPageRoute(builder: (_) => Search(), settings: settings);
       default:
         return MaterialPageRoute(
             builder: (_) => HomeScreen(), settings: settings);

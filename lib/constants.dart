@@ -4,3 +4,4 @@ export 'extensions.dart';
 final repository = Repository();
 const homeRoute = 'home';
 const registerRoute = 'register';
+const searchRoute = 'search';
