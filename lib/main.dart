@@ -1,4 +1,5 @@
 import 'package:chat_app/bloc/register/register_bloc.dart';
+import 'package:chat_app/bloc/search/search_bloc.dart';
 import 'package:chat_app/screens/home_screen.dart';
 import 'package:chat_app/screens/register_screen.dart';
 import 'package:chat_app/screens/search_screen.dart';
@@ -63,7 +64,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<LoginBloc>(create: (BuildContext context) => LoginBloc()),
         BlocProvider<RegisterBloc>(
-            create: (BuildContext context) => RegisterBloc())
+            create: (BuildContext context) => RegisterBloc()),
+        BlocProvider<SearchBloc>(
+            create: (BuildContext context) => SearchBloc()),
       ],
       child: MaterialApp(
         title: 'Flutter Chat',

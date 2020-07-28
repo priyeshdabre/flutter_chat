@@ -1,5 +1,8 @@
+import 'package:chat_app/bloc/search/search_bloc.dart';
+import 'package:chat_app/constants.dart';
 import 'package:chat_app/log_out.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -13,6 +16,13 @@ class HomeScreen extends StatelessWidget {
             onPressed: () => logOut(context),
           )
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.message),
+        onPressed: () {
+          BlocProvider.of<SearchBloc>(context).add(GetUserList());
+          Navigator.of(context).pushNamed(searchRoute);
+        },
       ),
       body: ListView.separated(
         itemCount: 1,
