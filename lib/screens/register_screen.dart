@@ -11,6 +11,7 @@ class RegisterScreen extends HookWidget {
   Widget build(BuildContext context) {
     final emailController = useTextEditingController();
     final passwordController = useTextEditingController();
+    final nameController = useTextEditingController();
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -49,6 +50,13 @@ class RegisterScreen extends HookWidget {
                   ),
                   obscureText: true,
                 ),
+                TextFormField(
+                  controller: nameController,
+                  validator: (value) => value.isEmpty ? 'Enter name' : null,
+                  decoration: InputDecoration(
+                    labelText: 'Name',
+                  ),
+                ),
                 SizedBox(
                   height: 10,
                 ),
@@ -72,9 +80,11 @@ class RegisterScreen extends HookWidget {
                             : () {
                                 if (_formKey.currentState.validate()) {
                                   BlocProvider.of<RegisterBloc>(context).add(
-                                      OnRegisterButtonTapped(
-                                          emailController.text,
-                                          passwordController.text));
+                                    OnRegisterButtonTapped(
+                                        emailController.text,
+                                        passwordController.text,
+                                        nameController.text),
+                                  );
                                 }
                               },
                       );

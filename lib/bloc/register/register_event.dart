@@ -7,8 +7,8 @@ abstract class RegisterEvent extends Equatable {
 class OnRegisterButtonTapped extends RegisterEvent {
   final String email;
   final String password;
-
-  OnRegisterButtonTapped(this.email, this.password);
+  final String name;
+  OnRegisterButtonTapped(this.email, this.password, this.name);
   @override
   List<Object> get props => [email, password];
 }

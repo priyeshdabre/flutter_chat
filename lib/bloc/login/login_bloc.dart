@@ -38,7 +38,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         final response = await repository.remoteApis.signInwithGoogle();
         if (response.uid != null) {
           repository.queries.saveToken(token: true);
-
+          if (!repository.remoteApis.checkIfUserExist(response.email)) {
+            repository.remoteApis
+                .uploadUserData(response.email, response.displayName);
+          }
           yield LoginSuccess();
         } else {
           yield LoginFailure(error: '');
