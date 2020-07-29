@@ -33,7 +33,7 @@ Future<void> logOut(BuildContext context) async {
               onPressed: () async {
                 Navigator.of(context).pop(true);
                 await repository.remoteApis.signOut();
-                await repository.queries.deleteSettingsData();
+                await repository.queries.deleteAuthData();
                 RestartWidget.restartApp(context);
               },
             ),
