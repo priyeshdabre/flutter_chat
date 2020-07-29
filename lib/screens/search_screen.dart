@@ -1,4 +1,6 @@
+import 'package:chat_app/bloc/chats/chats_bloc.dart';
 import 'package:chat_app/bloc/search/search_bloc.dart';
+import 'package:chat_app/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,7 +33,20 @@ class Search extends StatelessWidget {
                       title: Text(state.list[index].data['username']),
                       subtitle: Text(state.list[index].data['email']),
                       trailing: IconButton(
-                          icon: Icon(Icons.message), onPressed: null),
+                        icon: Icon(
+                          Icons.message,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        onPressed: () {
+                          repository.remoteApis.createChatroom(
+                              repository.queries.username,
+                              state.list[index].data['username']);
+                          BlocProvider.of<ChatsBloc>(context).add(
+                              GetChats(state.list[index].data['username']));
+                          Navigator.of(context).pushNamed(chatsRoute,
+                              arguments: state.list[index].data['username']);
+                        },
+                      ),
                     ),
                   );
                 }
@@ -44,7 +59,7 @@ class Search extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 8),
               decoration: BoxDecoration(
-                  border: Border.all(),
+                  border: Border.all(color: Colors.grey),
                   borderRadius: BorderRadius.circular(25)),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
