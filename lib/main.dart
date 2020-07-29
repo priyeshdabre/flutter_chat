@@ -12,6 +12,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'Screens/login_screen.dart';
 import 'bloc/authentication/authentication_bloc.dart';
+import 'bloc/bloc_observer.dart';
 import 'bloc/login/login_bloc.dart';
 import 'constants.dart';
 
@@ -19,6 +20,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await repository.queries.openAuthBox();
+  Bloc.observer = MyBlocObserver();
   runApp(RestartWidget(child: MyApp()));
 }
 
