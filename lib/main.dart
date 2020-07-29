@@ -1,5 +1,8 @@
+import 'package:chat_app/bloc/chats/chats_bloc.dart';
+import 'package:chat_app/bloc/conversation/conversation_bloc.dart';
 import 'package:chat_app/bloc/register/register_bloc.dart';
 import 'package:chat_app/bloc/search/search_bloc.dart';
+import 'package:chat_app/screens/chats_screen.dart';
 import 'package:chat_app/screens/home_screen.dart';
 import 'package:chat_app/screens/register_screen.dart';
 import 'package:chat_app/screens/search_screen.dart';
@@ -67,6 +70,9 @@ class MyApp extends StatelessWidget {
             create: (BuildContext context) => RegisterBloc()),
         BlocProvider<SearchBloc>(
             create: (BuildContext context) => SearchBloc()),
+        BlocProvider<ChatsBloc>(create: (BuildContext context) => ChatsBloc()),
+        BlocProvider<ConversationBloc>(
+            create: (BuildContext context) => ConversationBloc()),
       ],
       child: MaterialApp(
         title: 'Flutter Chat',
@@ -98,6 +104,13 @@ class Router {
             builder: (_) => RegisterScreen(), settings: settings);
       case (searchRoute):
         return MaterialPageRoute(builder: (_) => Search(), settings: settings);
+      case (chatsRoute):
+        return MaterialPageRoute(
+          builder: (_) => ChatScreen(
+            user2: settings.arguments,
+          ),
+          settings: settings,
+        );
       default:
         return MaterialPageRoute(
             builder: (_) => HomeScreen(), settings: settings);
