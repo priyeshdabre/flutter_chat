@@ -23,7 +23,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             .login(email: event.email, password: event.password);
         if (response.uid != null) {
           repository.queries.saveToken(token: true);
-
+          repository.queries.saveName(name: response.displayName);
           yield LoginSuccess();
         } else {
           yield LoginFailure(error: '');
@@ -42,6 +42,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             repository.remoteApis
                 .uploadUserData(response.email, response.displayName);
           }
+          repository.queries.saveName(name: response.displayName);
           yield LoginSuccess();
         } else {
           yield LoginFailure(error: '');
