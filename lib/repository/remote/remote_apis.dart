@@ -1,3 +1,4 @@
+import 'package:chat_app/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -90,5 +91,63 @@ class RemoteApis {
       print(e.toString());
       return true;
     }
+  }
+
+  void createChatroom(String currentUser, String user2) {
+    try {
+      _firestore
+          .collection('chatrooms')
+          .document(currentUser.compareTo(user2) == 0
+              ? '${currentUser}_$user2'
+              : currentUser.compareTo(user2) == 1
+                  ? '${currentUser}_$user2'
+                  : '${user2}_$currentUser')
+          .setData({
+        'chatroomId': currentUser.compareTo(user2) == 0
+            ? '${currentUser}_$user2'
+            : currentUser.compareTo(user2) == 1
+                ? '${currentUser}_$user2'
+                : '${user2}_$currentUser',
+        'users': [user2, currentUser]
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void addChats(String currentUser, String user2, String message) {
+    _firestore
+        .collection('chatrooms')
+        .document(currentUser.compareTo(user2) == 0
+            ? '${currentUser}_$user2'
+            : currentUser.compareTo(user2) == 1
+                ? '${currentUser}_$user2'
+                : '${user2}_$currentUser')
+        .collection('chats')
+        .add({
+      'message': message,
+      'sentBy': currentUser,
+      'timestamp': DateTime.now()
+    });
+  }
+
+  Stream<QuerySnapshot> getChats(String currentUser, String user2) {
+    return _firestore
+        .collection('chatrooms')
+        .document(currentUser.compareTo(user2) == 0
+            ? '${currentUser}_$user2'
+            : currentUser.compareTo(user2) == 1
+                ? '${currentUser}_$user2'
+                : '${user2}_$currentUser')
+        .collection('chats')
+        .orderBy('timestamp', descending: false)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getConversations() {
+    return _firestore
+        .collection('chatrooms')
+        .where('users', arrayContains: repository.queries.username)
+        .snapshots();
   }
 }
