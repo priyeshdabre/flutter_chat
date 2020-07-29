@@ -12,6 +12,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   SearchBloc() : super(SearchInitial());
   QuerySnapshot userList;
   List<DocumentSnapshot> sortedList;
+  List<DocumentSnapshot> users;
   @override
   Stream<SearchState> mapEventToState(
     SearchEvent event,
@@ -19,12 +20,18 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     if (event is GetUserList) {
       yield FetchingUser();
       userList = await repository.remoteApis.getUserList();
-      yield FetchedUserList(list: userList.documents);
+      users = userList.documents
+          .where((element) =>
+              element.data['username'] != repository.queries.username)
+          .toList();
+      yield FetchedUserList(list: users);
     }
     if (event is GetUser) {
       // yield FetchingUser();
-      sortedList = userList.documents
-          .where((element) => element.data['username'].contains(event.query))
+      sortedList = users
+          .where((element) => element.data['username']
+              .toLowerCase()
+              .contains(event.query.toLowerCase()))
           .toList();
       yield FetchedUserList().copyWith(ulist: sortedList ?? []);
     }
